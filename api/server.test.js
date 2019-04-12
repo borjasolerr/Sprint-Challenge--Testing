@@ -14,7 +14,7 @@ describe('Express app', () => {
         .expect(422);
     });
 
-    it('should respond with status code 200 on proper request', () => {
+    it('should respond with status code 200 on proper response', () => {
       return request(app)
         .post('/games')
         .send({
@@ -23,6 +23,31 @@ describe('Express app', () => {
           releaseYear: 1980 // not required
         })
         .expect(200);
+    });
+
+    it('will create new game', () => {
+      const gameCreated = { message: 'Game created.' };
+      return request(app)
+        .post('/games')
+        .send({
+          title: 'Pacman', // required
+          genre: 'Arcade', // required
+          releaseYear: 1980 // not required
+        })
+        .expect(gameCreated);
+    });
+  });
+
+  describe('[GET] /games endpoint', () => {
+    it('responds with status code 200 on successful response', () => {
+      return request(app)
+        .get('/games')
+        .expect(200);
+    });
+
+    it('returns an array', async () => {
+      const gamesArr = await request(app).get('/games');
+      await expect(gamesArr).toBe(typeof array);
     });
   });
 });
